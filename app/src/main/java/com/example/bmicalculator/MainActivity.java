@@ -1,8 +1,11 @@
 package com.example.bmicalculator;
 
+import android.Manifest;
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 calcBMI();
+                hideKeyboard(MainActivity.this);
             }
         });
 
@@ -54,5 +58,17 @@ public class MainActivity extends AppCompatActivity {
         else if (bmi >= 30){
             Toast.makeText(getApplicationContext(), "OBESITY", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //static method to hide keyboard
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
